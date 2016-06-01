@@ -195,6 +195,15 @@ if [ -d $PKG/usr/man ]; then
   )
 fi
 
+# copy presets
+cp -r $INFINALITY_BUNDLE/fontconfig_patches/{combi,free,ms} \
+  $PKG/etc/fonts/conf.avail.infinality
+
+# install fc-presets
+cp  $INFINALITY_BUNDLE/fontconfig_patches/fc-presets \
+  $PKG/usr/bin/fc-presets
+
+
 # infinality-bundle
 cp -r $INFINALITY_BUNDLE/doc/fontconfig-infinality-ultimate \
   $PKG/usr/doc/fontconfig-$VERSION/ || exit 1
