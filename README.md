@@ -21,7 +21,7 @@ issue.
 1.  Clone this repository
 
   ```
-  root@darkstar:~# git clone https://github.com/rfmae/bob-infinality-bundle
+  root@darkstar:~# git clone https://github.com/archfan/bob-infinality-bundle
   ```
 
 2.  Build, remove and install packages following this order:
