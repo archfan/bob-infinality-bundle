@@ -204,6 +204,14 @@ rm -f $PKG/usr/doc/fontconfig-$VERSION/INSTALL
 # empty file
 rm -f $PKG/usr/doc/fontconfig-$VERSION/NEWS
 
+# copy presets
+cp -r $INFINALITY_BUNDLE/fontconfig_patches/{combi,free,ms} \
+  $PKG/etc/fonts/conf.avail.infinality
+
+# install fc-presets
+cp  $INFINALITY_BUNDLE/fontconfig_patches/fc-presets \
+  $PKG/usr/bin/fc-presets
+
 mkdir $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 zcat $CWD/doinst.sh.gz > $PKG/install/doinst.sh
