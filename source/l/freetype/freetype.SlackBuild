@@ -22,7 +22,7 @@
 
 
 PKGNAM=freetype
-VERSION=${VERSION:-$(echo $PKGNAM-*.tar.xz | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
+VERSION=${VERSION:-$(echo $PKGNAM-*.tar.gz | cut -d - -f 2 | rev | cut -f 3- -d . | rev)}
 BUILD=${BUILD:-1}
 
 NUMJOBS=${NUMJOBS:-" -j7 "}
@@ -59,7 +59,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG
 cd $TMP
 rm -rf freetype-$VERSION
-tar xvf $CWD/freetype-$VERSION.tar.xz || exit 1
+tar xvf $CWD/freetype-$VERSION.tar.gz || exit 1
 cd freetype-$VERSION
 
 chown -R root:root .
@@ -90,7 +90,7 @@ ls -1 $INFINALITY_BUNDLE/*.patch | while read patch; do
 done
 
 chown -R root:root .
-CFLAGS="$SLKCFLAGS" make setup CFG="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --build=$ARCH-slackware-linux"
+CFLAGS="$SLKCFLAGS" make setup CFG="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --disable-static --with-harfbuzz --with-png --build=$ARCH-slackware-linux"
 make $NUMJOBS || make || exit 1
 make install DESTDIR=$PKG
 
@@ -124,6 +124,10 @@ rm -rf $PKG/usr/doc/freetype-$VERSION/docs/reference
 # infinality-bundle
 install -D -m0755 $INFINALITY_BUNDLE/infinality-settings.sh \
   $PKG/etc/profile.d/infinality-settings.sh
+
+install -D -m0755 $INFINALITY_BUNDLE/xft-settings.sh \
+  $PKG/etc/X11/xinit/xft-settings.sh
+
 
 mkdir $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc

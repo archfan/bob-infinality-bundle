@@ -88,6 +88,8 @@ CFLAGS="$SLKCFLAGS" \
   --disable-static \
   --disable-win32 \
   --disable-trace \
+  --disable-static \
+  --disable-lto \
   --enable-xlib \
   --enable-xcb \
   --enable-ps \
@@ -96,6 +98,7 @@ CFLAGS="$SLKCFLAGS" \
   --enable-tee \
   --enable-ft \
   --enable-gl \
+  --enable-egl \
   --enable-gobject \
   --enable-xml \
   --build=$ARCH-slackware-linux

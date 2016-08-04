@@ -72,31 +72,22 @@ find . \
 # infinality-bundle
 INFINALITY_BUNDLE=$CWD/infinality-bundle
 cp -r $INFINALITY_BUNDLE/conf.d.infinality .
-# 00-fonts.conf.in.patch is in conflict with fontconfig.font.dir.list.diff.gz (from Pat)
-ls -1 $INFINALITY_BUNDLE/fontconfig_patches/*.patch | grep -v 00-fonts.conf.in.patch | while read patch; do
+ls -1 $INFINALITY_BUNDLE/fontconfig_patches/*.patch | while read patch; do
   echo
   echo "Applying: $patch ..."
   echo
   patch -p1 < $patch
 done
 
-# The wonderful extended version of the font so generously
-# opened up for free modification and distribution by one
-# for the previously proprietary font founderies, and that
-# Stepan Roh did such a marvelous job on getting the ball
-# rolling with should clearly (IMHO) be the default font:
-zcat $CWD/fontconfig.dejavu.diff.gz | patch -p1 --verbose || exit 1
-
-# Hardcode the default font search path rather than having
-# fontconfig figure it out (and possibly follow symlinks, or
-# index ugly bitmapped fonts):
-zcat $CWD/fontconfig.font.dir.list.diff.gz | patch -p1 --verbose --backup --suffix=.orig || exit 1
-
 # infinality-bundle
+#aclocal
+#libtoolize -f
+#automake --add-missing -fi
+#autoreconf --install
+
 aclocal
 libtoolize -f
-automake --add-missing -fi
-autoreconf --install
+automake -afi
 
 CFLAGS=$SLKCFLAGS \
 ./configure \
@@ -105,11 +96,12 @@ CFLAGS=$SLKCFLAGS \
   --mandir=/usr/man \
   --sysconfdir=/etc \
   --with-templatedir=/etc/fonts/conf.avail \
-  --with-baseconfigdir=/etc/fonts \
-  --with-configdir=/etc/fonts/conf.d \
+  --with-templateinfdir=/etc/fonts/conf.avail.infinality \
   --with-xmldir=/etc/fonts \
   --localstatedir=/var \
-  --enable-static=no \
+  --disable-static \
+  --with-default-fonts=/usr/share/fonts \
+  --with-add-fonts=/usr/share/fonts \
   --build=$ARCH-slackware-linux
 
 # Uses a currently non-functional sgml tool, thus '-i':
@@ -149,37 +141,38 @@ find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
 
 # Set up the default options in /etc/fonts/conf.d:
-(  cd $PKG/etc/fonts/conf.d
-   for fontconf in \
-        20-unhint-small-vera.conf \
-        30-urw-aliases.conf \
-        30-metric-aliases.conf \
-        40-nonlatin.conf \
-        45-latin.conf \
-        49-sansserif.conf \
-        50-user.conf \
-        51-local.conf \
-        60-latin.conf \
-        65-fonts-persian.conf \
-        65-nonlatin.conf \
-        69-unifont.conf \
-        80-delicious.conf \
-        90-synthetic.conf ; do
-     if [ -r ../conf.avail/$fontconf ]; then
-       ln -sf ../conf.avail/$fontconf .
-     else
-       echo "ERROR:  unable to symlink ../conf.avail/$fontconf, file does not exist."
-       exit 1
-     fi
-   done
-   if [ ! $? = 0 ]; then
-     exit 1
-   fi
-)
-if [ ! $? = 0 ]; then
-  echo "Missing /etc/fonts/$fontconf default.  Exiting"
-  exit 1
-fi
+# Not sure if this really needed.
+#(  cd $PKG/etc/fonts/conf.d
+#   for fontconf in \
+#        20-unhint-small-vera.conf \
+#        30-urw-aliases.conf \
+#        30-metric-aliases.conf \
+#        40-nonlatin.conf \
+#        45-latin.conf \
+#        49-sansserif.conf \
+#        50-user.conf \
+#        51-local.conf \
+#        60-latin.conf \
+#        65-fonts-persian.conf \
+#        65-nonlatin.conf \
+#        69-unifont.conf \
+#        80-delicious.conf \
+#        90-synthetic.conf ; do
+#     if [ -r ../conf.avail/$fontconf ]; then
+#       ln -sf ../conf.avail/$fontconf .
+#     else
+#       echo "ERROR:  unable to symlink ../conf.avail/$fontconf, file does not exist."
+#       exit 1
+#     fi
+#   done
+#   if [ ! $? = 0 ]; then
+#     exit 1
+#   fi
+#)
+#if [ ! $? = 0 ]; then
+#  echo "Missing /etc/fonts/$fontconf default.  Exiting"
+#  exit 1
+#fi
 
 # Fix manpages:
 if [ -d $PKG/usr/man ]; then
