@@ -31,3 +31,9 @@ issue.
     3.  `source/l/cairo`
 
     Or just execute as root `install.sh`.
+
+## Current versions
+
+* Freetype 2.6.5
+* Cairo 1.4.6
+* Fontconfig 2.11.95
