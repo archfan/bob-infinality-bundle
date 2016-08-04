@@ -1,4 +1,4 @@
-# bob-infinality-bundle
+# Infinality Bundle for Slackware 14.2
 
 These are SlackBuilds & patches to rebuild some official packages in Slackware Linux,
 are in test so be careful with the result in your system.
@@ -31,15 +31,3 @@ issue.
     3.  `source/l/cairo`
 
     Or just execute as root `install.sh`.
-
-## Notes
-
-*  At this moment these SlackBuilds are from and for **slackware64-current**, but they also
-   work with **slackware-current**.
-*  I tried to make the minimal modificactions to the originals Slackbuilds.
-*  There is not need to select a type of font rendering (Windows, Apple or Ubuntu)
-   since the *"aim of infinality-bundle is to make use of the vast potential hidden
-   in native Linux font rendering back-end"*. This does not mean you can not
-   configure some aspects of the font rendering, please check:
-   *  `/etc/profile.d/infinality-settings.sh`
-   *  `/usr/doc/fontconfig-*/fontconfig-infinality-ultimate`
